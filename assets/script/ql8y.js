@@ -6,7 +6,7 @@ window.addEventListener("DOMContentLoaded", () => {
     let cookieObject = document.cookie.split(";").map(cookie => cookie.split("=")).reduce((accumulator, [key, value]) =>({...accumulator, [key.trim()]:decodeURIComponent(value) }),{});
 
     if (document.cookie === "") {
-        document.cookie=`expires=${date}; path=/`;
+        setCookieExpiration()
     }
 
     sliders.forEach(slider => slider.addEventListener("click", toggle));
@@ -26,7 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         function saveSettings(stream, value){
             document.cookie=`${stream}=${value}`
-            document.cookie=`expires=${date}; path=/`;
+            setCookieExpiration()
             addToChromeStorage()
             setTimeout(location.reload(true),1000);
         }
@@ -47,8 +47,11 @@ window.addEventListener("DOMContentLoaded", () => {
         })
     })()
 
+    function setCookieExpiration(){
+        document.cookie=`expires=${date}; path=/`;
+    }
+
     function addToChromeStorage(){
         chrome.storage.local.set({cookieObject})
     }
-    console.log(cookieObject)
 });
