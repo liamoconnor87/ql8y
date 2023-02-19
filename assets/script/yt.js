@@ -1,3 +1,10 @@
 window.addEventListener("load", () => {
-    console.log(">>>>>>>>>>>>> YOUTUBE")
+
+    chrome.storage.onChanged.addListener((changes) => {
+        location.reload(true);
+    })
+
+    chrome.storage.local.get("cookieObject", ({cookieObject}) => {
+        console.log(cookieObject);
+    })
 })

@@ -33,5 +33,8 @@
             "matches": ["https://*.twitch.tv/*"],
             "js": ["/assets/script/tw.js"]
         }
+    ],
+    "permissions":[
+        "storage"
     ]
 }

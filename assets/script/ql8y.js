@@ -5,7 +5,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const date = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
     let cookieObject = document.cookie.split(";").map(cookie => cookie.split("=")).reduce((accumulator, [key, value]) =>({...accumulator, [key.trim()]:decodeURIComponent(value) }),{});
 
-    document.cookie=`expires=${date}; path=/`;
+    if (document.cookie === "") {
+        document.cookie=`expires=${date}; path=/`;
+    }
+
     sliders.forEach(slider => slider.addEventListener("click", toggle));
 
     function toggle(){
@@ -23,6 +26,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
         function saveSettings(stream, value){
             document.cookie=`${stream}=${value}`
+            document.cookie=`expires=${date}; path=/`;
+            addToChromeStorage()
+            setTimeout(location.reload(true),1000);
         }
     };
 
@@ -32,11 +38,17 @@ window.addEventListener("DOMContentLoaded", () => {
                 slider.classList.remove(falsevalue)
                 slider.classList.add(trueValue)
                 slider.previousElementSibling.setAttribute("checked", "")
+                addToChromeStorage()
             } else {
                 slider.classList.remove(trueValue)
                 slider.classList.add(falsevalue)
+                addToChromeStorage()
             }
         })
     })()
 
+    function addToChromeStorage(){
+        chrome.storage.local.set({cookieObject})
+    }
+    console.log(cookieObject)
 });
